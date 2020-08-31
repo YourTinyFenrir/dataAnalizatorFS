@@ -134,7 +134,7 @@ void Stats::createVectorOfBets(QVector<double> param) {
 
 void Stats::writeBetsOnExcel() {
 
-    QXlsx::Document doc("D:\\MyProrgams\\bets.xlsx");
+    QXlsx::Document doc("bets.xlsx");
 
     bool isEmpty = false;
     int rowForWrite;
@@ -155,7 +155,7 @@ void Stats::writeBetsOnExcel() {
         doc.write(rowForWrite, 4, value.bet);
         doc.write(rowForWrite, 6, value.comment);
 
-        doc.saveAs("D:\\MyProrgams\\bets.xlsx");
+        doc.saveAs("bets.xlsx");
 
         rowForWrite++;
 

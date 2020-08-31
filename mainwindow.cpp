@@ -12,19 +12,38 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     // Открытие файла с данными с FlashScore и его обработка
-    QFile forRead("D:\\MyProrgams\\json.txt");
+    QFile forRead("json.txt");
     Stats temp(forRead);
     stats = temp;
 
     // Считывание из файла параметров для обработки данных
     QFile cfg("cfg.txt");
 
-    if ((cfg.exists()) && (cfg.open(QIODevice::ReadOnly))) {
+    if (!cfg.exists()) {
+
+        QVector<double> defaultCfg;
+        defaultCfg.push_back(0.8); defaultCfg.push_back(0.75);
+        defaultCfg.push_back(0.2); defaultCfg.push_back(0.6);
+        defaultCfg.push_back(0.25); defaultCfg.push_back(0.65);
+        defaultCfg.push_back(0.9); defaultCfg.push_back(0.75);
+
+        cfg.open(QIODevice::WriteOnly);
+
+        QTextStream stream(&cfg);
+        for (int i = 0; i < 8; ++i)
+            stream << QString::number(defaultCfg[i], 'f', 2) << endl;
+
+        cfg.close();
+
+    }
+
+    if (cfg.open(QIODevice::ReadOnly)) {
         QTextStream fileText(&cfg);
 
         QVector<double> param;
         for (int i = 0; i < 8; ++i)
             param.push_back(fileText.readLine(0).toDouble());
+
         cfg.close();
 
         ui->par11->setValue(param[0]);
